@@ -1,0 +1,80 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekeller-@student.42sp.org.br <ekeller-@    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/16 14:56:50 by ekeller-@st       #+#    #+#             */
+/*   Updated: 2025/04/17 17:54:50 by ekeller-@st      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef PARSER_H
+# define PARSER_H
+
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+
+
+// vai ser recebido
+typedef enum e_token_type // remove
+{
+	WORD,
+	PIPE,
+	REDIR_IN,
+	REDIR_OUT,
+	REDIR_DELIMITER,
+	REDIR_APPEND,
+	DOLLAR
+}	t_token_type;
+
+typedef struct s_token // remove
+{
+	t_token_type	type;
+	char			*value;
+	struct s_token	*next;
+}	t_token;
+
+// my structs below
+// instead of using  "t_token **current", use "parser_state *current". 
+
+
+typedef struct parser_state
+{
+	struct s_token	*current;
+}	t_parser_state;
+
+typedef enum e_redirtype
+{
+	REDIR_IN,
+	REDIR_OUT,
+	REDIR_DELIMITER,
+	REDIR_APPEND
+}	t_redir_type;
+
+typedef struct redirection
+{
+	t_redir_type		type;
+	char				*filename;
+	struct redirection	*next;
+}	t_redirections;
+
+typedef struct s_command
+{
+	char				*command_name;
+	char				**args;
+	int					args_count;
+	t_redirections		*redirs;
+	struct s_command	*next;
+}	t_command;
+
+//parser_utils.c
+t_token 	*advance_token(t_parser_state *p_state);
+t_command	*init_command_struct(void);
+
+//parser.c
+t_command	*parse_pipeline(t_parser_state *p_state);
+
+#endif
