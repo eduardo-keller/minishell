@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   parser_gpt.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ekeller-@student.42sp.org.br <ekeller-@    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 14:59:11 by ekeller-@st       #+#    #+#             */
-/*   Updated: 2025/04/16 17:17:11 by ekeller-@st      ###   ########.fr       */
+/*   Updated: 2025/04/24 13:02:22 by ekeller-@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ Redirection *parse_redirection(ParserState *ps) {
 Command *parse_command(ParserState *ps) {
     Command *cmd = malloc(sizeof(Command));
     if (!cmd) {
-        perror("malloc");
+        perror("malloc");ft_error("Malloc parser redirection failed");
         exit(EXIT_FAILURE);
     }
     cmd->command_name = NULL;

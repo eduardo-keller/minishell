@@ -6,7 +6,7 @@
 /*   By: ekeller-@student.42sp.org.br <ekeller-@    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 14:56:50 by ekeller-@st       #+#    #+#             */
-/*   Updated: 2025/04/17 17:54:50 by ekeller-@st      ###   ########.fr       */
+/*   Updated: 2025/04/24 18:37:50 by ekeller-@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,18 @@ typedef struct s_command
 //parser_utils.c
 t_token 	*advance_token(t_parser_state *p_state);
 t_command	*init_command_struct(void);
+void		ft_error(char *msg);
+int			count_args(t_parser_state *p_state);
 
 //parser.c
 t_command	*parse_pipeline(t_parser_state *p_state);
+
+//libft.c REMOVE!!!!
+char	*ft_strdup(const char *s);
+void	*ft_calloc(size_t nmemb, size_t size);
+
+//parser_test.c REMOVE
+t_token *create_demo_token_list(void);
+t_token *create_tok(t_token_type type, const char *value);
 
 #endif
