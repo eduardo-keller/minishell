@@ -5,7 +5,7 @@ CC = cc
 CFLAGS = -Wall -Werror -Wextra -g -I.
 
 # source code
-SRCS = 	main.c parser_utils.c parser.c libft.c
+SRCS = 	main.c parser_utils.c parser.c libft.c parser_free.c
 
 # objects
 OBJECTS = $(SRCS:.c=.o)
@@ -32,6 +32,6 @@ fclean: clean
 
 re: fclean all
 	@echo "Object files recreated."
-	@echo "Program recreated."input_validator.c
+	@echo "Program recreated."
 
 .PHONY: all clean fclean re

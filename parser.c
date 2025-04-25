@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeller- <ekeller-@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: ekeller-@student.42sp.org.br <ekeller-@    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 17:08:20 by ekeller-@st       #+#    #+#             */
-/*   Updated: 2025/04/25 12:45:32 by ekeller-         ###   ########.fr       */
+/*   Updated: 2025/04/25 17:29:31 by ekeller-@st      ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "parser.h"
 
@@ -42,14 +42,14 @@ t_command	*parse_command(t_parser_state *p_state)
 }
 
 //cmd->args[0] is the name of the command. 
-t_command *check_command_args(t_parser_state *p_state, t_command *cmd)
+t_command	*check_command_args(t_parser_state *p_state, t_command *cmd)
 {
 	t_token	*token;
 	int		args_count;
 	int		i;
-	
+
 	i = 0;
-	token  = p_state->current;
+	token = p_state->current;
 	args_count = count_args(p_state);
 	cmd->args_count = args_count;
 	if (token->type == WORD && token)
@@ -66,36 +66,38 @@ t_command *check_command_args(t_parser_state *p_state, t_command *cmd)
 	return (cmd);
 }
 
-t_command	*check_redirections(t_parser_state *p_state, t_command	*cmd) //return or not?
+t_command	*check_redirections(t_parser_state *p_state, t_command	*cmd)
 {
-	t_redirections *redir;
+	t_redirections	*redir;
+	t_redirections	*last_redir;
 	t_token			*curr_token;
-	
+
 	curr_token = p_state->current;
 	while (curr_token && (curr_token->type != WORD
-			&& curr_token->type != PIPE && curr_token->type != DOLLAR)) // probably take dollar
+			&& curr_token->type != PIPE && curr_token->type != DOLLAR))
 	{
-		redir = parse_redirection(p_state); //maybe init redir with null here
+		redir = parse_redirection(p_state);
 		if (!cmd->redirs)
 			cmd->redirs = redir;
 		else
 		{
-			while (cmd->redirs->next)
-				cmd->redirs = cmd->redirs->next;
-			cmd->redirs->next = redir;
+			last_redir = cmd->redirs;
+			while (last_redir->next)
+				last_redir = last_redir->next;
+			last_redir->next = redir;
 		}
+		curr_token = p_state->current;
 	}
 	return (cmd);
 }
 
-//assigns the redirection type to t_redirections which is a component of t_command
-//advances to the next token which must be a word and assign the word as
-//redirection file
+//assigns the redirection type to t_redirections which is a 
+//component of t_command advances to the next token which must
+//be a word and assign the word as redirection file
 t_redirections	*parse_redirection(t_parser_state *p_state)
 {
-	t_token			*filename_tok;
 	t_redirections	*redir;
-	
+
 	if (!p_state->current)
 		ft_error("Unexpected end of tokens while parsing redirection");
 	redir = malloc(sizeof(t_redirections));
@@ -103,14 +105,8 @@ t_redirections	*parse_redirection(t_parser_state *p_state)
 		ft_error("Malloc parser redirection failed");
 	redir = assign_redir_type(p_state, redir);
 	if (p_state->current->type != WORD || !p_state->current)
-		ft_error("After redirection must be a word");
-	redir->filename = ft_strdup(p_state->current->value);
-	redir->next = NULL;
-	advance_token(p_state);
-	filename_tok = p_state->current;
-	if (!filename_tok || filename_tok->type != WORD)
 		ft_error("Expected filename after redirection operator");
-	redir->filename = ft_strdup(filename_tok->value);
+	redir->filename = ft_strdup(p_state->current->value);
 	redir->next = NULL;
 	advance_token(p_state);
 	return (redir);
