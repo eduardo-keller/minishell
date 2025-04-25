@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeller-@student.42sp.org.br <ekeller-@    +#+  +:+       +#+        */
+/*   By: ekeller- <ekeller-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 14:56:50 by ekeller-@st       #+#    #+#             */
-/*   Updated: 2025/04/24 18:37:50 by ekeller-@st      ###   ########.fr       */
+/*   Updated: 2025/04/25 12:07:33 by ekeller-         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #ifndef PARSER_H
 # define PARSER_H
@@ -48,10 +48,10 @@ typedef struct parser_state
 
 typedef enum e_redirtype
 {
-	REDIR_IN,
-	REDIR_OUT,
-	REDIR_DELIMITER,
-	REDIR_APPEND
+	R_IN,
+	R_OUT,
+	R_DELIMITER,
+	R_APPEND
 }	t_redir_type;
 
 typedef struct redirection
@@ -75,13 +75,19 @@ t_token 	*advance_token(t_parser_state *p_state);
 t_command	*init_command_struct(void);
 void		ft_error(char *msg);
 int			count_args(t_parser_state *p_state);
+t_redirections	*assign_redir_type(t_parser_state *p_state, t_redirections *redir);
 
 //parser.c
 t_command	*parse_pipeline(t_parser_state *p_state);
+t_command	*parse_command(t_parser_state *p_state);
+t_command *check_command_args(t_parser_state *p_state, t_command *cmd);
+t_command	*check_redirections(t_parser_state *p_state, t_command	*cmd);
+t_redirections	*parse_redirection(t_parser_state *p_state);
 
 //libft.c REMOVE!!!!
 char	*ft_strdup(const char *s);
 void	*ft_calloc(size_t nmemb, size_t size);
+void	*ft_memset(void *s, int c, size_t n);
 
 //parser_test.c REMOVE
 t_token *create_demo_token_list(void);

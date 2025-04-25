@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeller-@student.42sp.org.br <ekeller-@    +#+  +:+       +#+        */
+/*   By: ekeller- <ekeller-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 17:09:03 by ekeller-@st       #+#    #+#             */
-/*   Updated: 2025/04/24 18:28:01 by ekeller-@st      ###   ########.fr       */
+/*   Updated: 2025/04/25 12:40:47 by ekeller-         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "parser.h"
 
@@ -60,4 +60,23 @@ int	count_args(t_parser_state *p_state)
 		temp.current = temp.current->next;
 	}
 	return (arg_count);
+}
+
+t_redirections	*assign_redir_type(t_parser_state *p_state, t_redirections *redir)
+{
+	t_token			*token;
+	
+	token = p_state->current;
+	if (token->type == REDIR_IN)
+		redir->type = R_IN;
+	else if (token->type == REDIR_OUT)
+		redir->type = R_OUT;
+	else if (token->type == REDIR_DELIMITER)
+		redir->type = R_DELIMITER;
+	else if (token->type == REDIR_APPEND)
+		redir->type = R_APPEND;
+	//else
+	//	ft_error("Invalid redirection operator");
+	advance_token(p_state);
+	return (redir);
 }

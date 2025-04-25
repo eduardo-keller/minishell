@@ -39,3 +39,18 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	ft_memset(alloc_mem, 0, total_mem);
 	return (alloc_mem);
 }
+
+void	*ft_memset(void *s, int c, size_t n)
+{
+	size_t			i;
+	unsigned char	value;
+
+	value = (unsigned char)c;
+	i = 0;
+	while (i < n)
+	{
+		((unsigned char *)s)[i] = value;
+		i++;
+	}
+	return (s);
+}

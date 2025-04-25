@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeller-@student.42sp.org.br <ekeller-@    +#+  +:+       +#+        */
+/*   By: ekeller- <ekeller-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 17:08:20 by ekeller-@st       #+#    #+#             */
-/*   Updated: 2025/04/24 18:36:47 by ekeller-@st      ###   ########.fr       */
+/*   Updated: 2025/04/25 12:45:32 by ekeller-         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "parser.h"
 
@@ -33,7 +33,6 @@ t_command	*parse_pipeline(t_parser_state *p_state)
 t_command	*parse_command(t_parser_state *p_state)
 {
 	t_command	*cmd;
-	t_token		*token; // not in use yet
 
 	cmd = init_command_struct();
 	cmd = check_redirections(p_state, cmd);
@@ -43,7 +42,7 @@ t_command	*parse_command(t_parser_state *p_state)
 }
 
 //cmd->args[0] is the name of the command. 
-t_command *check_command_args(t_parser_state *p_state, t_command	*cmd)
+t_command *check_command_args(t_parser_state *p_state, t_command *cmd)
 {
 	t_token	*token;
 	int		args_count;
@@ -74,7 +73,7 @@ t_command	*check_redirections(t_parser_state *p_state, t_command	*cmd) //return 
 	
 	curr_token = p_state->current;
 	while (curr_token && (curr_token->type != WORD
-			|| curr_token->type != PIPE || curr_token->type != DOLLAR)) // probably take dollar
+			&& curr_token->type != PIPE && curr_token->type != DOLLAR)) // probably take dollar
 	{
 		redir = parse_redirection(p_state); //maybe init redir with null here
 		if (!cmd->redirs)
@@ -108,25 +107,11 @@ t_redirections	*parse_redirection(t_parser_state *p_state)
 	redir->filename = ft_strdup(p_state->current->value);
 	redir->next = NULL;
 	advance_token(p_state);
-	return (redir);
-}
-
-
-t_redirections	*assign_redir_type(t_parser_state *p_state, t_redirections *redir)
-{
-	t_token			*token;
-	
-	token = p_state->current;
-	if (token->type == REDIR_IN)
-		redir->type = REDIR_IN;
-	else if (token->type == REDIR_OUT)
-		redir->type = REDIR_OUT;
-	else if (token->type == REDIR_DELIMITER)
-		redir->type = REDIR_DELIMITER;
-	else if (token->type == REDIR_APPEND)
-		redir->type = REDIR_APPEND;
-	else
-		ft_error("Invalid redirection operator");
+	filename_tok = p_state->current;
+	if (!filename_tok || filename_tok->type != WORD)
+		ft_error("Expected filename after redirection operator");
+	redir->filename = ft_strdup(filename_tok->value);
+	redir->next = NULL;
 	advance_token(p_state);
 	return (redir);
 }

@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parser_gpt.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekeller-@student.42sp.org.br <ekeller-@    +#+  +:+       +#+        */
+/*   By: ekeller- <ekeller-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 14:59:11 by ekeller-@st       #+#    #+#             */
-/*   Updated: 2025/04/24 13:02:22 by ekeller-@st      ###   ########.fr       */
+/*   Updated: 2025/04/25 11:14:24 by ekeller-         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -237,17 +237,17 @@ Token *create_token(TokenType type, const char *value) {
 
 /*
  * For demonstration, create a linked list of tokens representing:
- * ls -l > output.txt | grep minishell
+ * ls -l | grep minishell > output.txt
  */
 Token *create_demo_token_list(void) {
     // Manually create each token.
     Token *t1 = create_token(TOKEN_WORD, "ls");
     Token *t2 = create_token(TOKEN_WORD, "-l");
-    Token *t3 = create_token(TOKEN_REDIRECT_OUT, ">");
-    Token *t4 = create_token(TOKEN_WORD, "output.txt");
-    Token *t5 = create_token(TOKEN_PIPE, "|");
-    Token *t6 = create_token(TOKEN_WORD, "grep");
-    Token *t7 = create_token(TOKEN_WORD, "minishell");
+    Token *t3 = create_token(TOKEN_REDIRECT_OUT, "|");
+    Token *t4 = create_token(TOKEN_WORD, "grep");
+    Token *t5 = create_token(TOKEN_PIPE, "minishell");
+    Token *t6 = create_token(TOKEN_WORD, ">");
+    Token *t7 = create_token(TOKEN_WORD, "output.txt");
 
     // Link the tokens together.
     t1->next = t2;
